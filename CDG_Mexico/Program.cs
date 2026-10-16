@@ -403,9 +403,37 @@ namespace CDG_Mexico
 
         }
 
-        static public void Modificar_historia_clinica() 
+        static public void Modificar_historia_clinica()
         {
-        
+            Console.WriteLine("Ingrese el DNI del paciente que desea modificar:");
+            string dni_buscar = Console.ReadLine()?.Trim();
+            bool encontrado = false;
+
+            for (int i = 0; i < Cantidad_Pacientes; i++)
+            {
+                if (arreglo_DNI[i] == dni_buscar)
+                {
+                    Console.WriteLine("\nPaciente encontrado: " + arreglo_PACIENTES[i]);
+
+                    Console.WriteLine("Ingrese el nuevo correo electrónico:");
+                    arreglo_CORREO_PACIENTES[i] = Console.ReadLine()?.Trim();
+
+                    Console.WriteLine("Ingrese el nuevo número de teléfono:");
+                    arreglo_NUMTELF[i] = Console.ReadLine()?.Trim();
+
+                    Console.WriteLine("¡Datos actualizados en la memoria!");
+                    encontrado = true;
+
+                    Guardar_datos_archivo();
+
+                    break;
+                }
+            }
+
+            if (encontrado == false)
+            {
+                Console.WriteLine("No se encontró ningún paciente para modificar.");
+            }
         }
 
         static public void Guardar_datos_archivo()
