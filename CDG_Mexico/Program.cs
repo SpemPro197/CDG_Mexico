@@ -15,7 +15,8 @@ namespace CDG_Mexico
 
         static string[] arreglo_PACIENTES = new string[MAX_PACIENTES];
 
-      
+        static string meridiano = "";
+
         static string[] arreglo_DNI = new string[MAX_PACIENTES];
         static string[] arreglo_GENERO = new string[MAX_PACIENTES];
         static string[] arreglo_EDAD = new string[MAX_PACIENTES];
@@ -25,17 +26,22 @@ namespace CDG_Mexico
         static string[] arreglo_ESPECIALIDADES = new string[MAX_PACIENTES];
         static string[] arreglo_FECHAHORA = new string[MAX_PACIENTES];
         static string[] arreglo_DOCTOR = new string[MAX_PACIENTES];
-        static string[] Drs_MedicinaG = new string[] { "Dr. Juan", "Dr. Camilo", "Dr. Ramos", "Dr. Camilo" };
-        static string[] Drs_Pediatria = new string[] { "Dr. Cruz", "Dr. Inga", "Dr. Chumpitaz", "Dra. Quispe" };
-        static string[] Drs_Ginecologia = new string[] { "Dra. Maria", "Dra. Jimena", "Dra. Luz", "Dra. Paloma" };
-        static string[] Drs_Traumatologia = new string[] { "Dra. Abigail", "Dr. Luis", "Dr. Esteban", "Dr. Quispe" };
-        static string[] Drs_Cirugia = new string[] { "Dra. Camila", "Dra. Cielo", "Dr. Huaman", "Dr. Calderon" };
+        static string[] Drs_MedicinaG = new string[] { "Dr.Juan", "Dr.Camilo", "Dr.Ramos", "Dr.Camilo" };
+        static string[] Drs_Pediatria = new string[] { "Dr.Cruz", "Dr.Inga", "Dr.Chumpitaz", "Dra.Quispe" };
+        static string[] Drs_Ginecologia = new string[] { "Dra.Maria", "Dra.Jimena", "Dra.Luz", "Dra.Paloma" };
+        static string[] Drs_Traumatologia = new string[] { "Dra.Abigail", "Dr.Luis", "Dr.Esteban", "Dr.Quispe" };
+        static string[] Drs_Cirugia = new string[] { "Dra.Camila", "Dra.Cielo", "Dr.Huaman", "Dr.Calderon" };
+
+        static string[] nombres_de_pacientes = new string[MAX_PACIENTES];
 
         static string doctor_elegido = "";
 
         static int especialidad_pacientes = 0;
 
-        static string ruta_archivo = "pacientes.txt";
+        static string ruta_archivo = "Registro_Pacientes_Hospital.txt";
+
+       
+       
 
         // /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 
@@ -83,25 +89,42 @@ namespace CDG_Mexico
                 return;
             }
 
+
             Console.WriteLine("Ingrese el DNI del paciente: [ 8 digitos. ]");
-            string dni_paciente = Console.ReadLine()?.Trim();
+            int dni_paciente = int.Parse(Console.ReadLine()?.Trim());
             
-            if (string.IsNullOrWhiteSpace(dni_paciente))
+            if (dni_paciente < 10000000 || dni_paciente > 99999999)
+            {
+                Console.WriteLine("El DNI del paciente debe tener 8 digitos. Intente nuevamente.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(dni_paciente.ToString()))
             {
                 Console.WriteLine("Si el paciente no tiene DNI entonces no se puede hacer ninguna cita. Intente nuevamente.");
                 return;
             }
 
-            Console.WriteLine("Ingrese el numero telefonico del paciente: ");
-            string numero_paciente = Console.ReadLine()?.Trim();
+            string dni_paciente_string = dni_paciente.ToString();
 
-            if (string.IsNullOrWhiteSpace(numero_paciente))
+            Console.WriteLine("Ingrese el numero telefonico del paciente: [ OJO: El numero debe tener 9 digitos y al momento de escribir el numero no se deben poner espacios, solo ponga el numero de corrido.]");
+            int numero_paciente = int.Parse(Console.ReadLine()?.Trim());
+
+            if(numero_paciente < 100000000 || numero_paciente > 999999999)
             {
-                Console.WriteLine("El paciente debe tener un numero al cual se le pueda contactar. Intente nuevamente.");
+                Console.WriteLine("El numero telefonico del paciente debe tener 9 digitos. Intente nuevamente.");
                 return;
             }
 
+            
 
+            if (string.IsNullOrWhiteSpace(numero_paciente.ToString()))
+            {
+                Console.WriteLine("El paciente debe tener un numero al cual se le pueda contactar. Intente nuevamente.");
+                ;
+            }
+
+            string numero_paciente_string = numero_paciente.ToString();
 
 
             Console.WriteLine("Ingrese la especialidad con la que se quiere reservar una cita: ");
@@ -119,15 +142,17 @@ namespace CDG_Mexico
                 if (especialidad_paciente < 1 || especialidad_paciente > 5)
                 {
                     Console.WriteLine("La especialidad ingresada no es válida. Intente nuevamente.");
-                    return;
+                    continue;
                 }
 
                 if(especialidad_paciente == 1)
                 {
                     for(int i = 0; i < Drs_MedicinaG.Length; i++)
                     {
-                        Console.WriteLine("Doctores disponibles: " + Drs_MedicinaG[i]);
-                        int doctor_elegido = int.Parse(Console.ReadLine()?.Trim());
+                        Console.WriteLine("Doctores disponibles: ");
+                        Console.WriteLine((i+1) + ". [ " + Drs_MedicinaG[i] + " ]");
+
+
                     }
                 }
 
@@ -135,8 +160,9 @@ namespace CDG_Mexico
                 {
                     for (int i = 0; i < Drs_Pediatria.Length; i++)
                     {
-                        Console.WriteLine("Doctores disponibles: " + Drs_Pediatria[i]);
-                        doctor_elegido = (Console.ReadLine()?.Trim());
+                        Console.WriteLine("Doctores disponibles: " );
+                        Console.WriteLine((i+1) + ". [ " + Drs_Pediatria[i] + " ] ");
+              
                     }
                 }
 
@@ -144,8 +170,9 @@ namespace CDG_Mexico
                 {
                     for (int i = 0; i < Drs_Ginecologia.Length; i++)
                     {
-                        Console.WriteLine("Doctores disponibles: " + Drs_Ginecologia[i]);
-                        doctor_elegido = Console.ReadLine()?.Trim();
+                        Console.WriteLine("Doctores disponibles: " );
+                        Console.WriteLine((i+1) + ". [ " + Drs_Ginecologia[i] + " ] ");
+
                     }
                 }
 
@@ -153,8 +180,8 @@ namespace CDG_Mexico
                 {
                     for (int i = 0; i < Drs_Traumatologia.Length; i++)
                     {
-                        Console.WriteLine("Doctores disponibles: " + Drs_Traumatologia[i]);
-                        doctor_elegido = (Console.ReadLine()?.Trim());
+                        Console.WriteLine("Doctores disponibles: " );
+                        Console.WriteLine((i+1) + ". [ " + Drs_Traumatologia[i] + " ]");
                     }
                 }
 
@@ -162,9 +189,20 @@ namespace CDG_Mexico
                 {
                     for (int i = 0; i < Drs_Cirugia.Length; i++)
                     {
-                        Console.WriteLine("Doctores disponibles: " + Drs_Cirugia[i]);
-                        doctor_elegido = (Console.ReadLine()?.Trim());
+                        Console.WriteLine("Doctores disponibles: ");
+                        Console.WriteLine((i+1) + ". [ " + Drs_Cirugia[i] + " ]");
+
                     }
+                }
+
+                Console.ReadKey();
+                Console.WriteLine("Ingrese el doctor con el que se va a atender: [ Escriba el nombre por favor. ]");
+                doctor_elegido = (Console.ReadLine()?.Trim());
+
+                if(doctor_elegido == null || string.IsNullOrWhiteSpace(doctor_elegido))
+                {
+                    Console.WriteLine("El doctor elegido no puede estar vacío. Intente nuevamente.");
+                    continue;
                 }
 
             }
@@ -173,7 +211,11 @@ namespace CDG_Mexico
             Console.WriteLine("Ingrese la fecha y hora de la cita: [ DD/MM/AÑO ]");
             string fecha_cita = Console.ReadLine()?.Trim();
 
-            if(string.IsNullOrWhiteSpace(fecha_cita))
+            string dia_cita = fecha_cita.Split('/')[0];
+            string mes_cita = fecha_cita.Split('/')[1];
+            string año_cita = fecha_cita.Split('/')[2];
+
+            if (string.IsNullOrWhiteSpace(fecha_cita))
             {
                 Console.WriteLine("La fecha de la cita es necesaria. Intente nuevamente.");
                 return;
@@ -183,31 +225,65 @@ namespace CDG_Mexico
 
             Random Hora_Aleatoria = new Random();
 
-            
+            Random minuto_aleatorio = new Random();
 
+            int hora_cita = Hora_Aleatoria.Next(6, 21);
+            int minuto_cita = minuto_aleatorio.Next(0, 60);
+
+            if (hora_cita < 12)
+            {
+                meridiano = "AM";
+            }
+            else
+            {
+                meridiano = "PM";
+            }
 
             Random Numero_Aleatorio_Para_Correo = new Random();
 
-            arreglo_PACIENTES[MAX_PACIENTES] = nombre_paciente_mayus;
-            arreglo_DNI[MAX_PACIENTES] = dni_paciente;
-            arreglo_NUMTELF[MAX_PACIENTES] = numero_paciente;
-            arreglo_GENERO[MAX_PACIENTES] = genero_paciente;
-            arreglo_EDAD[MAX_PACIENTES] = edad_paciente;
-            arreglo_DOCTOR[MAX_PACIENTES] = doctor_elegido;
-
-
-
-
+       
 
             string correo_paciente = $"{partes_nombre_paciente[0].ToLower()}.{partes_nombre_paciente[1].ToLower()}{Numero_Aleatorio_Para_Correo.Next(100, 1000)}@gmail.com";
 
-            arreglo_CORREO_PACIENTES[MAX_PACIENTES] = correo_paciente;
+            string fecha_y_hora_cita = $"El {doctor_elegido} lo vera el [ {dia_cita}/{mes_cita}/{año_cita} ] a las {hora_cita}:{minuto_cita}.{meridiano}.";
 
-            Console.WriteLine("Se ha registrado exitosamente...");
+
+      
+
+
+            arreglo_NOMBRES[Cantidad_Pacientes] = nombre_paciente_mayus;
+            arreglo_PACIENTES[Cantidad_Pacientes] = nombre_paciente_mayus;
+            arreglo_DNI[Cantidad_Pacientes] = dni_paciente_string;
+            arreglo_NUMTELF[Cantidad_Pacientes] = numero_paciente_string;
+            arreglo_GENERO[Cantidad_Pacientes] = genero_paciente;
+            arreglo_EDAD[Cantidad_Pacientes] = edad_paciente;
+            arreglo_DOCTOR[Cantidad_Pacientes] = doctor_elegido;
+            arreglo_FECHAHORA[Cantidad_Pacientes] = fecha_y_hora_cita;
+            arreglo_CORREO_PACIENTES[Cantidad_Pacientes] = correo_paciente;
+
+
+
+
+
+            arreglo_CORREO_PACIENTES[Cantidad_Pacientes] = correo_paciente;
+
+            Console.WriteLine("Se ha registrado exitosamente.");
+
+            Console.WriteLine(" * RESUMEN * ");
+
+       
+
+            Console.WriteLine("Nombre del paciente: " + nombre_paciente_mayus); 
+
             Console.WriteLine("Para mantener al paciente en contacto se ha creado un correo electronico para el paciente: " + correo_paciente);
-            Console.WriteLine("");
+
+            Console.WriteLine(fecha_y_hora_cita);
+
             
-            Console.WriteLine("Puede cambiar la direccion del correo electronico a la de su gusto volviendo al menu y eligiendo la opcion: " + " Modificar historia clinca.");
+            Console.WriteLine(" *********** ");
+            
+            
+            Console.WriteLine("Puede cambiar la direccion del correo electronico a la de su gusto volviendo al menu y eligiendo la opcion: " + " [ 4. Modificar historia clinca. ]");
 
 
             Console.WriteLine("*****************************");
@@ -219,6 +295,67 @@ namespace CDG_Mexico
             Console.ReadKey();
         }
 
+        static public void Ordenar_Pacientes_Por_Orden_Alfabetico()
+        {
+            if(Cantidad_Pacientes <= 1)
+            {
+                Console.WriteLine("No hay suficientes pacientes para ordenar...");
+                return;
+            }
+
+            for(int i = 0; i < Cantidad_Pacientes - 1; i++)
+            {
+                for(int j = 0; j < Cantidad_Pacientes - 1 - i; j++)
+                {
+                    if (string.Compare(arreglo_PACIENTES[j], arreglo_PACIENTES[j + 1]) > 0)
+                    {
+                        string nombre_temporal = arreglo_PACIENTES[j];
+                        arreglo_PACIENTES[j] = arreglo_PACIENTES[j + 1];
+                        arreglo_PACIENTES[j + 1] = nombre_temporal;
+
+                        string dni_temporal = arreglo_DNI[j];
+                        arreglo_DNI[j] = arreglo_DNI[j + 1];
+                        arreglo_DNI[j + 1] = dni_temporal;
+
+                        string genero_temporal = arreglo_GENERO[j];
+                        arreglo_GENERO[j] = arreglo_GENERO[j + 1];
+                        arreglo_GENERO[j + 1] = genero_temporal;
+
+                        string edad_temporal = arreglo_EDAD[j];
+                        arreglo_EDAD[j] = arreglo_EDAD[j + 1];
+                        arreglo_EDAD[j + 1] = edad_temporal;
+
+                        string correo_temporal = arreglo_CORREO_PACIENTES[j];
+                        arreglo_CORREO_PACIENTES[j] = arreglo_CORREO_PACIENTES[j + 1];
+                        arreglo_CORREO_PACIENTES[j + 1] = correo_temporal;
+
+                        string especialidad_temporal = arreglo_ESPECIALIDADES[j];
+                        arreglo_ESPECIALIDADES[j] = arreglo_ESPECIALIDADES[j + 1];
+                        arreglo_ESPECIALIDADES[j + 1] = especialidad_temporal;
+
+                        string fecha_hora_temporal = arreglo_FECHAHORA[j];
+                        arreglo_FECHAHORA[j] = arreglo_FECHAHORA[j + 1];
+                        arreglo_FECHAHORA[j + 1] = fecha_hora_temporal;
+
+                        string doctor_temporal = arreglo_DOCTOR[j];
+                        arreglo_DOCTOR[j] = arreglo_DOCTOR[j + 1];
+                        arreglo_DOCTOR[j + 1] = doctor_temporal;
+
+                        string numero_temporal = arreglo_NUMTELF[j];
+                        arreglo_NUMTELF[j] = arreglo_NUMTELF[j + 1];
+                        arreglo_NUMTELF[j + 1] = numero_temporal;
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        }
+
 
         static public void Buscar_historia_Clinica()
         {
@@ -227,6 +364,21 @@ namespace CDG_Mexico
 
         static public void Mostrar_Pacientes_Registrados()
         {
+            for(int i = 0; i < Cantidad_Pacientes; i++)
+            {
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine("Paciente: " + (i + 1) + ": " + arreglo_PACIENTES[i]);
+                Console.WriteLine("DNI: " + arreglo_DNI[i]);
+                Console.WriteLine("Genero: " + arreglo_GENERO[i]);
+                Console.WriteLine("Edad: " + arreglo_EDAD[i]);
+                Console.WriteLine("Numero de telefono: " + arreglo_NUMTELF[i]);
+                Console.WriteLine("Correo electronico: " + arreglo_CORREO_PACIENTES[i]);
+                Console.WriteLine("Especialidad: " + arreglo_ESPECIALIDADES[i]);
+                Console.WriteLine("Datos de la cita: " + arreglo_FECHAHORA[i]);
+                Console.WriteLine("--------------------------------------");
+            }
+
+
 
         }
 
@@ -237,11 +389,54 @@ namespace CDG_Mexico
 
         static public void Guardar_datos_archivo()
         {
+            if(Cantidad_Pacientes == 0)
+            {
+                Console.WriteLine("No hay pacientes que guardar.");
+                return;
+            }
+
+            using (StreamWriter escribir = new StreamWriter(ruta_archivo))
+            {
+                for(int i = 0; i < Cantidad_Pacientes; i++)
+                {
+                    escribir.WriteLine("--------------------------------------");
+                    escribir.WriteLine("Paciente: " + (i + 1) + ": " + arreglo_PACIENTES[i]);
+                    escribir.WriteLine("DNI: " + arreglo_DNI[i]);
+                    escribir.WriteLine("Genero: " + arreglo_GENERO[i]);
+                    escribir.WriteLine("Edad: " + arreglo_EDAD[i]);
+                    escribir.WriteLine("Numero de telefono: " + arreglo_NUMTELF[i]);
+                    escribir.WriteLine("Correo electronico: " + arreglo_CORREO_PACIENTES[i]);
+                    escribir.WriteLine("Especialidad: " + arreglo_ESPECIALIDADES[i]);
+                    escribir.WriteLine("Datos de la cita: " + arreglo_FECHAHORA[i]);
+                    escribir.WriteLine("--------------------------------------");
+                }
+
+
+            }
+
+
 
         }
 
         static public void Cargar_Datos_de_Archivo()
         {
+            if(!File.Exists(ruta_archivo))
+            {
+                Console.WriteLine("No se encontró el archivo de datos. Se creará uno nuevo al guardar.");
+                return;
+            }
+
+            using (StreamReader leer = new StreamReader(ruta_archivo))
+            {
+                for (int i = 0; i < Cantidad_Pacientes; i++)
+                {
+
+
+                }
+
+
+            }
+
 
         }
 
@@ -255,12 +450,12 @@ namespace CDG_Mexico
 
         static void Main(string[] args)
         {
-
+            // P R O G R A M A /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 
             Cargar_Datos_de_Archivo();
 
             int opcion = 0;
-            while(opcion != 6)
+            while(opcion != 7)
             {
                 
                 Console.WriteLine("--------------------------------------");
@@ -268,10 +463,11 @@ namespace CDG_Mexico
                 Console.WriteLine("--------------------------------------");
                 Console.WriteLine("1. Registrar paciente.");
                 Console.WriteLine("2. Buscar historia clínica.");
-                Console.WriteLine("3. Pacientes registrados.");
+                Console.WriteLine("3. Ver Pacientes registrados.");
                 Console.WriteLine("4. Modificar historia clínica.");
                 Console.WriteLine("5. Guardar información (archivo).");
-                Console.WriteLine("6. Salir.");
+                Console.WriteLine("6. Ordenar pacientes por orden alfabético.");
+                Console.WriteLine("7. Salir.");
 
                 if (!int.TryParse(Console.ReadLine(), out opcion))
 
@@ -302,6 +498,9 @@ namespace CDG_Mexico
                         Guardar_datos_archivo();
                         break;
                     case 6:
+                        Ordenar_Pacientes_Por_Orden_Alfabetico();
+                        break;
+                    case 7:
                         Console.WriteLine("Gracias, y hasta pronto!!!");
                         break;
                     default:
@@ -312,6 +511,10 @@ namespace CDG_Mexico
 
 
             }
+
+            // /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
         }
+
+
     }
 }
