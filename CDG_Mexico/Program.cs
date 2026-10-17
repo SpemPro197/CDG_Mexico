@@ -195,7 +195,8 @@ namespace CDG_Mexico
                     }
                 }
 
-                Console.ReadKey();
+                Console.WriteLine("");
+                Console.WriteLine("");
                 Console.WriteLine("Ingrese el doctor con el que se va a atender: [ Escriba el nombre por favor. ]");
                 doctor_elegido = (Console.ReadLine()?.Trim());
 
@@ -269,7 +270,7 @@ namespace CDG_Mexico
 
             Console.WriteLine("Se ha registrado exitosamente.");
 
-            Console.WriteLine(" * RESUMEN * ");
+            Console.WriteLine(" \t\t* RESUMEN * ");
 
        
 
@@ -291,8 +292,12 @@ namespace CDG_Mexico
             Cantidad_Pacientes++;
 
 
+            Console.WriteLine("Presione cualquier tecla para continuar...");
 
             Console.ReadKey();
+
+            Console.WriteLine("");
+            Console.WriteLine("");
         }
 
         static public void Ordenar_Pacientes_Por_Orden_Alfabetico()
