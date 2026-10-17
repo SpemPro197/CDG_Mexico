@@ -312,15 +312,16 @@ namespace CDG_Mexico
 
         static public void Ordenar_Pacientes_Por_Orden_Alfabetico()
         {
-            if(Cantidad_Pacientes <= 1)
+            if (Cantidad_Pacientes <= 1)
             {
                 Console.WriteLine("No hay suficientes pacientes para ordenar...");
+                Console.ReadKey(); 
                 return;
             }
 
-            for(int i = 0; i < Cantidad_Pacientes - 1; i++)
+            for (int i = 0; i < Cantidad_Pacientes - 1; i++)
             {
-                for(int j = 0; j < Cantidad_Pacientes - 1 - i; j++)
+                for (int j = 0; j < Cantidad_Pacientes - 1 - i; j++)
                 {
                     if (string.Compare(arreglo_PACIENTES[j], arreglo_PACIENTES[j + 1]) > 0)
                     {
@@ -361,14 +362,13 @@ namespace CDG_Mexico
                         arreglo_NUMTELF[j + 1] = numero_temporal;
 
                     }
-
-
                 }
-
-
             }
 
-
+            // MENSAJE DE ÉXITO Y PAUSA
+            Console.WriteLine("¡Los pacientes han sido ordenados alfabéticamente con éxito!");
+            Console.WriteLine("Presione cualquier tecla para volver al menú...");
+            Console.ReadKey(); // <- PAUSA AQUÍ
         }
 
 
