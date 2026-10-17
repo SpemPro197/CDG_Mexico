@@ -359,7 +359,28 @@ namespace CDG_Mexico
 
         static public void Buscar_historia_Clinica()
         {
+            Console.WriteLine("Ingrese el DNI del paciente a buscar:");
+            string dni_buscar = Console.ReadLine()?.Trim();
+            bool encontrado = false;
 
+            for (int i = 0; i < Cantidad_Pacientes; i++)
+            {
+                if (arreglo_DNI[i] == dni_buscar)
+                {
+                    Console.WriteLine("\n--- PACIENTE ENCONTRADO ---");
+                    Console.WriteLine("Nombre: " + arreglo_PACIENTES[i]);
+                    Console.WriteLine("Especialidad: " + arreglo_ESPECIALIDADES[i]);
+                    Console.WriteLine("Doctor: " + arreglo_DOCTOR[i]);
+                    Console.WriteLine("Teléfono: " + arreglo_NUMTELF[i]);
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (encontrado == false)
+            {
+                Console.WriteLine("No se encontró ningún paciente registrado con ese DNI.");
+            }
         }
 
         static public void Mostrar_Pacientes_Registrados()
