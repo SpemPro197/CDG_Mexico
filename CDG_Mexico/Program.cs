@@ -81,13 +81,18 @@ namespace CDG_Mexico
                 return;
             }
 
-                Console.WriteLine("Ingrese el genero del paciente: [ M / F ]");
-            string genero_paciente = Console.ReadLine()?.Trim();
-            if (string.IsNullOrWhiteSpace(genero_paciente))
+            string genero_paciente = "";
+            do
             {
-                Console.WriteLine("El genero del paciente no puede estar vacio. Intente nuevamente.");
-                return;
-            }
+                Console.WriteLine("Ingrese el genero del paciente: [ M / F ]");
+                genero_paciente = Console.ReadLine().Trim().ToUpper();
+
+                if (genero_paciente != "M" && genero_paciente != "F")
+                {
+                    Console.WriteLine("Error: Por favor ingrese solo 'M' para Masculino o 'F' para Femenino.");
+                }
+
+            } while (genero_paciente != "M" && genero_paciente != "F");
 
 
             string dni_paciente_string = "";
