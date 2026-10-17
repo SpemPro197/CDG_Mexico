@@ -118,24 +118,28 @@ namespace CDG_Mexico
 
             } while (true);
 
-            Console.WriteLine("Ingrese el numero telefonico del paciente: [ OJO: El numero debe tener 9 digitos y al momento de escribir el numero no se deben poner espacios, solo ponga el numero de corrido.]");
-            int numero_paciente = int.Parse(Console.ReadLine()?.Trim());
+            string numero_paciente_string = "";
+            int numero_paciente = 0;
 
-            if(numero_paciente < 100000000 || numero_paciente > 999999999)
+            do
             {
-                Console.WriteLine("El numero telefonico del paciente debe tener 9 digitos. Intente nuevamente.");
-                return;
-            }
+                Console.WriteLine("Ingrese el numero telefonico del paciente: [ OJO: El numero debe tener 9 digitos ]");
+                numero_paciente_string = Console.ReadLine().Trim();
 
-            
+                if (numero_paciente_string.Length != 9)
+                {
+                    Console.WriteLine("Error: El telefono debe tener exactamente 9 digitos. Intente nuevamente.");
+                }
+                else if (int.TryParse(numero_paciente_string, out numero_paciente) == false)
+                {
+                    Console.WriteLine("Error: El telefono no puede contener letras ni símbolos. Ingrese solo números.");
+                }
+                else
+                {
+                    break;
+                }
 
-            if (string.IsNullOrWhiteSpace(numero_paciente.ToString()))
-            {
-                Console.WriteLine("El paciente debe tener un numero al cual se le pueda contactar. Intente nuevamente.");
-                ;
-            }
-
-            string numero_paciente_string = numero_paciente.ToString();
+            } while (true);
 
 
             Console.WriteLine("Ingrese la especialidad con la que se quiere reservar una cita: ");
