@@ -90,22 +90,28 @@ namespace CDG_Mexico
             }
 
 
-            Console.WriteLine("Ingrese el DNI del paciente: [ 8 digitos. ]");
-            int dni_paciente = int.Parse(Console.ReadLine()?.Trim());
-            
-            if (dni_paciente < 10000000 || dni_paciente > 99999999)
-            {
-                Console.WriteLine("El DNI del paciente debe tener 8 digitos. Intente nuevamente.");
-                return;
-            }
+            string dni_paciente_string = "";
+            int validador_numeros = 0;
 
-            if (string.IsNullOrWhiteSpace(dni_paciente.ToString()))
+            do
             {
-                Console.WriteLine("Si el paciente no tiene DNI entonces no se puede hacer ninguna cita. Intente nuevamente.");
-                return;
-            }
+                Console.WriteLine("Ingrese el DNI del paciente: [ 8 digitos. ]");
+                dni_paciente_string = Console.ReadLine().Trim();
 
-            string dni_paciente_string = dni_paciente.ToString();
+                if (dni_paciente_string.Length != 8)
+                {
+                    Console.WriteLine("Error: El DNI debe tener exactamente 8 digitos. Intente nuevamente.");
+                }
+                else if (int.TryParse(dni_paciente_string, out validador_numeros) == false)
+                {
+                    Console.WriteLine("Error: El DNI no puede contener letras ni símbolos. Ingrese solo números.");
+                }
+                else
+                {
+                    break;
+                }
+
+            } while (true);
 
             Console.WriteLine("Ingrese el numero telefonico del paciente: [ OJO: El numero debe tener 9 digitos y al momento de escribir el numero no se deben poner espacios, solo ponga el numero de corrido.]");
             int numero_paciente = int.Parse(Console.ReadLine()?.Trim());
