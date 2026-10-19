@@ -197,7 +197,7 @@ namespace CDG_Mexico
 
             string fecha_y_hora_cita = $"El {doctor_elegido} lo vera el [ {dia_cita}/{mes_cita}/{año_cita} ] a las {hora_cita}:{minuto_cita} {meridiano}.";
 
-            // GUARDANDO EN LA MEMORIA
+            
             arreglo_NOMBRES[Cantidad_Pacientes] = nombre_paciente_mayus;
             arreglo_PACIENTES[Cantidad_Pacientes] = nombre_paciente_mayus;
             arreglo_DNI[Cantidad_Pacientes] = dni_paciente_string;
@@ -209,15 +209,15 @@ namespace CDG_Mexico
             arreglo_FECHAHORA[Cantidad_Pacientes] = fecha_y_hora_cita;
             arreglo_CORREO_PACIENTES[Cantidad_Pacientes] = correo_paciente;
 
-            Console.WriteLine("\nSe ha registrado exitosamente.");
+            Console.WriteLine("\nSe ha registrado exitosamente en el sistema temporal.");
             Console.WriteLine(" * RESUMEN * ");
             Console.WriteLine("Nombre del paciente: " + nombre_paciente_mayus);
             Console.WriteLine("Correo electronico asignado: " + correo_paciente);
             Console.WriteLine(fecha_y_hora_cita);
             Console.WriteLine(" *********** ");
+            Console.WriteLine("NOTA: Recuerde usar la Opción 5 del menú para guardar los datos permanentemente.");
 
             Cantidad_Pacientes++;
-            
 
             Console.WriteLine("\nPresione cualquier tecla para continuar...");
             Console.ReadKey();
@@ -252,10 +252,10 @@ namespace CDG_Mexico
                 }
             }
 
-            Console.Clear(); // Limpiamos la pantalla para que la lista se vea ordenada desde arriba
+            Console.Clear();
             Console.WriteLine("¡Los pacientes han sido ordenados alfabéticamente con éxito!\n");
 
-            // LLAMAMOS A LA FUNCIÓN QUE MUESTRA LOS DATOS AUTOMÁTICAMENTE
+            
             Mostrar_Pacientes_Registrados();
         }
 
@@ -293,7 +293,7 @@ namespace CDG_Mexico
             for (int i = 0; i < Cantidad_Pacientes; i++)
             {
                 Console.WriteLine("--------------------------------------");
-                Console.WriteLine("Paciente: " + (i + 1) + ": " + arreglo_PACIENTES[i]);
+                Console.WriteLine("Paciente " + (i + 1) + ": " + arreglo_PACIENTES[i]);
                 Console.WriteLine("DNI: " + arreglo_DNI[i]);
                 Console.WriteLine("Genero: " + arreglo_GENERO[i]);
                 Console.WriteLine("Edad: " + arreglo_EDAD[i]);
@@ -325,6 +325,7 @@ namespace CDG_Mexico
                     arreglo_NUMTELF[i] = Console.ReadLine()?.Trim();
 
                     Console.WriteLine("\n¡Datos actualizados en la memoria exitosamente!");
+                    Console.WriteLine("NOTA: Recuerde usar la Opción 5 del menú para guardar los cambios permanentemente.");
                     encontrado = true;
                     break;
                 }
@@ -347,20 +348,10 @@ namespace CDG_Mexico
             {
                 for (int i = 0; i < Cantidad_Pacientes; i++)
                 {
-                    escribir.WriteLine("--------------------------------------");
-                    escribir.WriteLine("Paciente: " + (i + 1) + ": " + arreglo_PACIENTES[i]);
-                    escribir.WriteLine("DNI: " + arreglo_DNI[i]);
-                    escribir.WriteLine("Genero: " + arreglo_GENERO[i]);
-                    escribir.WriteLine("Edad: " + arreglo_EDAD[i]);
-                    escribir.WriteLine("Numero de telefono: " + arreglo_NUMTELF[i]);
-                    escribir.WriteLine("Correo electronico: " + arreglo_CORREO_PACIENTES[i]);
-                    escribir.WriteLine("Especialidad: " + arreglo_ESPECIALIDADES[i]);
-                    escribir.WriteLine("Datos de la cita: " + arreglo_FECHAHORA[i]);
-                    escribir.WriteLine("--------------------------------------");
+                    escribir.WriteLine($"{arreglo_DNI[i]},{arreglo_PACIENTES[i]},{arreglo_GENERO[i]},{arreglo_EDAD[i]},{arreglo_NUMTELF[i]},{arreglo_CORREO_PACIENTES[i]},{arreglo_ESPECIALIDADES[i]},{arreglo_FECHAHORA[i]},{arreglo_DOCTOR[i]}");
                 }
             }
-            // Agregamos este mensaje para que el profesor sepa que la Opción 5 sí funcionó
-            Console.WriteLine(">> Los datos han sido guardados correctamente en el archivo de texto.");
+            Console.WriteLine("\n>> Los datos han sido guardados correctamente en el archivo de texto.");
         }
 
         static public void Cargar_Datos_de_Archivo()
@@ -373,40 +364,26 @@ namespace CDG_Mexico
 
             try
             {
+                Cantidad_Pacientes = 0;
                 using (StreamReader leer = new StreamReader(ruta_archivo))
                 {
                     string linea;
-                    while ((linea = leer.ReadLine()) != null)
+                    while ((linea = leer.ReadLine()) != null && Cantidad_Pacientes < MAX_PACIENTES)
                     {
-                        if (linea.StartsWith("Paciente: "))
+                        string[] datos = linea.Split(',');
+
+                        if (datos.Length == 9)
                         {
-                            string[] partesPaciente = linea.Split(new string[] { ": " }, 3, StringSplitOptions.None);
-                            if (partesPaciente.Length >= 3)
-                            {
-                                arreglo_PACIENTES[Cantidad_Pacientes] = partesPaciente[2];
-                                arreglo_NOMBRES[Cantidad_Pacientes] = partesPaciente[2];
-                            }
-
-                            string lineaDni = leer.ReadLine();
-                            if (lineaDni != null && lineaDni.StartsWith("DNI: ")) arreglo_DNI[Cantidad_Pacientes] = lineaDni.Substring(5).Trim();
-
-                            string lineaGenero = leer.ReadLine();
-                            if (lineaGenero != null && lineaGenero.StartsWith("Genero: ")) arreglo_GENERO[Cantidad_Pacientes] = lineaGenero.Substring(8).Trim();
-
-                            string lineaEdad = leer.ReadLine();
-                            if (lineaEdad != null && lineaEdad.StartsWith("Edad: ")) arreglo_EDAD[Cantidad_Pacientes] = lineaEdad.Substring(6).Trim();
-
-                            string lineaTelefono = leer.ReadLine();
-                            if (lineaTelefono != null && lineaTelefono.StartsWith("Numero de telefono: ")) arreglo_NUMTELF[Cantidad_Pacientes] = lineaTelefono.Substring(20).Trim();
-
-                            string lineaCorreo = leer.ReadLine();
-                            if (lineaCorreo != null && lineaCorreo.StartsWith("Correo electronico: ")) arreglo_CORREO_PACIENTES[Cantidad_Pacientes] = lineaCorreo.Substring(20).Trim();
-
-                            string lineaEspecialidad = leer.ReadLine();
-                            if (lineaEspecialidad != null && lineaEspecialidad.StartsWith("Especialidad: ")) arreglo_ESPECIALIDADES[Cantidad_Pacientes] = lineaEspecialidad.Substring(14).Trim();
-
-                            string lineaCita = leer.ReadLine();
-                            if (lineaCita != null && lineaCita.StartsWith("Datos de la cita: ")) arreglo_FECHAHORA[Cantidad_Pacientes] = lineaCita.Substring(18).Trim();
+                            arreglo_DNI[Cantidad_Pacientes] = datos[0];
+                            arreglo_PACIENTES[Cantidad_Pacientes] = datos[1];
+                            arreglo_NOMBRES[Cantidad_Pacientes] = datos[1];
+                            arreglo_GENERO[Cantidad_Pacientes] = datos[2];
+                            arreglo_EDAD[Cantidad_Pacientes] = datos[3];
+                            arreglo_NUMTELF[Cantidad_Pacientes] = datos[4];
+                            arreglo_CORREO_PACIENTES[Cantidad_Pacientes] = datos[5];
+                            arreglo_ESPECIALIDADES[Cantidad_Pacientes] = datos[6];
+                            arreglo_FECHAHORA[Cantidad_Pacientes] = datos[7];
+                            arreglo_DOCTOR[Cantidad_Pacientes] = datos[8];
 
                             Cantidad_Pacientes++;
                         }
@@ -433,9 +410,9 @@ namespace CDG_Mexico
             int opcion = 0;
             while (opcion != 7)
             {
-                Console.Clear(); 
+                Console.Clear();
                 Console.WriteLine("--------------------------------------");
-                Console.WriteLine("   CENTRO MATERNO INFANTIL MÉXICO     ");
+                Console.WriteLine("    CENTRO MATERNO INFANTIL MÉXICO      ");
                 Console.WriteLine("--------------------------------------");
                 Console.WriteLine("1. Registrar paciente.");
                 Console.WriteLine("2. Buscar historia clínica.");
@@ -468,7 +445,7 @@ namespace CDG_Mexico
                         break;
                     case 5:
                         Guardar_datos_archivo();
-                        Console.WriteLine("\nPresione cualquier tecla para continuar...");
+                        Console.WriteLine("\nPresione cualquier tecla para volver al menú...");
                         Console.ReadKey();
                         break;
                     case 6:
