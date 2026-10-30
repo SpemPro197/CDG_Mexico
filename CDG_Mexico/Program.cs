@@ -13,8 +13,12 @@ namespace CDG_Mexico
         static int MAX_PACIENTES = 500;
         static int Cantidad_Pacientes = 0;
 
+        static string turno = "";
+
         static string[] arreglo_PACIENTES = new string[MAX_PACIENTES];
-        static string meridiano = "";
+        static string meridiano1 = "";
+        static string meridiano2 = "";
+        static string meridiano3 = "";
         static string[] arreglo_DNI = new string[MAX_PACIENTES];
         static string[] arreglo_GENERO = new string[MAX_PACIENTES];
         static string[] arreglo_EDAD = new string[MAX_PACIENTES];
@@ -47,17 +51,22 @@ namespace CDG_Mexico
                 return;
             }
 
+
             Console.WriteLine("***** REGISTRAR PACIENTE ****");
+
+            Console.WriteLine("Por favor, ingrese los siguientes datos del paciente: ");
 
             Console.WriteLine("Ingrese el nombre del paciente: ");
             string nombre_paciente = Console.ReadLine()?.Trim();
+
             if (string.IsNullOrWhiteSpace(nombre_paciente))
             {
                 Console.WriteLine("El nombre del paciente no puede estar vacío. Intente nuevamente.");
                 return;
             }
+
             string nombre_paciente_mayus = nombre_paciente.ToUpper();
-            string[] partes_nombre_paciente = nombre_paciente_mayus.Split(' ');
+            string[] partes_nombre_paciente = nombre_paciente_mayus.ToUpper().Split(' ');
 
             Console.WriteLine("Ingrese la edad del paciente: ");
             string edad_paciente = Console.ReadLine()?.Trim();
@@ -67,23 +76,22 @@ namespace CDG_Mexico
                 return;
             }
 
-            string genero_paciente = "";
-            do
+            Console.WriteLine("Ingrese el genero del paciente: [ M / F ]");
+            string genero_paciente = Console.ReadLine()?.Trim();
+            if (string.IsNullOrWhiteSpace(genero_paciente))
             {
-                Console.WriteLine("Ingrese el genero del paciente: [ M / F ]");
-                genero_paciente = Console.ReadLine()?.Trim().ToUpper();
-                if (genero_paciente != "M" && genero_paciente != "F")
-                {
-                    Console.WriteLine("Error: El genero debe ser solo 'M' o 'F'. Intente nuevamente.");
-                }
-            } while (genero_paciente != "M" && genero_paciente != "F");
+                Console.WriteLine("El genero del paciente no puede estar vacio. Intente nuevamente.");
+                return;
+            }
+
 
             string dni_paciente_string = "";
             int validador_numeros = 0;
+
             do
             {
                 Console.WriteLine("Ingrese el DNI del paciente: [ 8 digitos. ]");
-                dni_paciente_string = Console.ReadLine()?.Trim();
+                dni_paciente_string = Console.ReadLine().Trim();
 
                 if (dni_paciente_string.Length != 8)
                 {
@@ -97,107 +105,233 @@ namespace CDG_Mexico
                 {
                     break;
                 }
+
             } while (true);
 
-            string numero_paciente_string = "";
+            Console.WriteLine("Ingrese el numero telefonico del paciente: [ OJO: El numero debe tener 9 digitos y al momento de escribir el numero no se deben poner espacios, solo ponga el numero de corrido.]");
+            int numero_paciente = int.Parse(Console.ReadLine()?.Trim());
+
+            if (numero_paciente < 100000000 || numero_paciente > 999999999)
+            {
+                Console.WriteLine("El numero telefonico del paciente debe tener 9 digitos. Intente nuevamente.");
+                return;
+            }
+
+
+
+            if (string.IsNullOrWhiteSpace(numero_paciente.ToString()))
+            {
+                Console.WriteLine("El paciente debe tener un numero al cual se le pueda contactar. Intente nuevamente.");
+                ;
+            }
+
+            string numero_paciente_string = numero_paciente.ToString();
+
+
+            Console.WriteLine("Ingrese la especialidad con la que se quiere reservar una cita: ");
+            Console.WriteLine("1. Medicina General");
+            Console.WriteLine("2. Pediatria");
+            Console.WriteLine("3. Ginecologia");
+            Console.WriteLine("4. Traumatologia");
+            Console.WriteLine("5. Cirugia");
+
+            int especialidad_paciente = int.Parse(Console.ReadLine()?.Trim());
+
+
             do
             {
-                Console.WriteLine("Ingrese el numero telefonico del paciente: [ OJO: 9 digitos, sin espacios ]");
-                numero_paciente_string = Console.ReadLine()?.Trim();
-
-                if (numero_paciente_string.Length != 9)
+                if (especialidad_paciente < 1 || especialidad_paciente > 5)
                 {
-                    Console.WriteLine("Error: El numero telefonico debe tener exactamente 9 digitos.");
+                    Console.WriteLine("La especialidad ingresada no es válida. Intente nuevamente.");
+                    continue;
                 }
-                else if (int.TryParse(numero_paciente_string, out validador_numeros) == false)
+
+                if (especialidad_paciente == 1)
                 {
-                    Console.WriteLine("Error: El telefono debe contener solo números.");
+                    for (int i = 0; i < Drs_MedicinaG.Length; i++)
+                    {
+                        Console.WriteLine("Doctores disponibles: ");
+                        Console.WriteLine((i + 1) + ". [ " + Drs_MedicinaG[i] + " ]");
+
+
+                    }
                 }
-                else
+
+                if (especialidad_paciente == 2)
                 {
-                    break;
+                    for (int i = 0; i < Drs_Pediatria.Length; i++)
+                    {
+                        Console.WriteLine("Doctores disponibles: ");
+                        Console.WriteLine((i + 1) + ". [ " + Drs_Pediatria[i] + " ] ");
+
+                    }
                 }
-            } while (true);
 
-            int especialidad_paciente = 0;
-            string nombre_especialidad = "";
-            do
-            {
-                Console.WriteLine("Ingrese la especialidad con la que se quiere reservar una cita: ");
-                Console.WriteLine("1. Medicina General");
-                Console.WriteLine("2. Pediatria");
-                Console.WriteLine("3. Ginecologia");
-                Console.WriteLine("4. Traumatologia");
-                Console.WriteLine("5. Cirugia");
-
-                string input_esp = Console.ReadLine()?.Trim();
-
-                if (int.TryParse(input_esp, out especialidad_paciente) == false || especialidad_paciente < 1 || especialidad_paciente > 5)
+                if (especialidad_paciente == 3)
                 {
-                    Console.WriteLine("Error: La especialidad ingresada no es válida. Elija un número del 1 al 5.");
+                    for (int i = 0; i < Drs_Ginecologia.Length; i++)
+                    {
+                        Console.WriteLine("Doctores disponibles: ");
+                        Console.WriteLine((i + 1) + ". [ " + Drs_Ginecologia[i] + " ] ");
+
+                    }
                 }
-                else
+
+                if (especialidad_paciente == 4)
                 {
-                    break;
+                    for (int i = 0; i < Drs_Traumatologia.Length; i++)
+                    {
+                        Console.WriteLine("Doctores disponibles: ");
+                        Console.WriteLine((i + 1) + ". [ " + Drs_Traumatologia[i] + " ]");
+                    }
                 }
-            } while (true);
 
-            if (especialidad_paciente == 1)
-            {
-                nombre_especialidad = "Medicina General";
-                for (int i = 0; i < Drs_MedicinaG.Length; i++) Console.WriteLine((i + 1) + ". [ " + Drs_MedicinaG[i] + " ]");
-            }
-            else if (especialidad_paciente == 2)
-            {
-                nombre_especialidad = "Pediatria";
-                for (int i = 0; i < Drs_Pediatria.Length; i++) Console.WriteLine((i + 1) + ". [ " + Drs_Pediatria[i] + " ] ");
-            }
-            else if (especialidad_paciente == 3)
-            {
-                nombre_especialidad = "Ginecologia";
-                for (int i = 0; i < Drs_Ginecologia.Length; i++) Console.WriteLine((i + 1) + ". [ " + Drs_Ginecologia[i] + " ] ");
-            }
-            else if (especialidad_paciente == 4)
-            {
-                nombre_especialidad = "Traumatologia";
-                for (int i = 0; i < Drs_Traumatologia.Length; i++) Console.WriteLine((i + 1) + ". [ " + Drs_Traumatologia[i] + " ]");
-            }
-            else if (especialidad_paciente == 5)
-            {
-                nombre_especialidad = "Cirugia";
-                for (int i = 0; i < Drs_Cirugia.Length; i++) Console.WriteLine((i + 1) + ". [ " + Drs_Cirugia[i] + " ]");
-            }
+                if (especialidad_paciente == 5)
+                {
+                    for (int i = 0; i < Drs_Cirugia.Length; i++)
+                    {
+                        Console.WriteLine("Doctores disponibles: ");
+                        Console.WriteLine((i + 1) + ". [ " + Drs_Cirugia[i] + " ]");
 
-            Console.WriteLine("Ingrese el doctor con el que se va a atender: [ Escriba el nombre por favor. ]");
-            doctor_elegido = Console.ReadLine()?.Trim();
+                    }
+                }
+
+                Console.ReadKey();
+                Console.WriteLine("Ingrese el doctor con el que se va a atender: [ Escriba el nombre por favor. ]");
+                doctor_elegido = (Console.ReadLine()?.Trim());
+
+                if (doctor_elegido == null || string.IsNullOrWhiteSpace(doctor_elegido))
+                {
+                    Console.WriteLine("El doctor elegido no puede estar vacío. Intente nuevamente.");
+                    continue;
+                }
+
+            }
+            while (especialidad_paciente == 0);
 
             Console.WriteLine("Ingrese la fecha y hora de la cita: [ DD/MM/AÑO ]");
             string fecha_cita = Console.ReadLine()?.Trim();
-            if (string.IsNullOrWhiteSpace(fecha_cita) || !fecha_cita.Contains("/"))
-            {
-                Console.WriteLine("La fecha de la cita no es válida. Registro cancelado.");
-                return;
-            }
 
             string dia_cita = fecha_cita.Split('/')[0];
             string mes_cita = fecha_cita.Split('/')[1];
             string año_cita = fecha_cita.Split('/')[2];
 
-            Random Hora_Aleatoria = new Random();
-            Random minuto_aleatorio = new Random();
-            int hora_cita = Hora_Aleatoria.Next(6, 21);
-            int minuto_cita = minuto_aleatorio.Next(0, 60);
+            if (string.IsNullOrWhiteSpace(fecha_cita))
+            {
+                Console.WriteLine("La fecha de la cita es necesaria. Intente nuevamente.");
+                return;
 
-            if (hora_cita < 12) meridiano = "AM";
-            else meridiano = "PM";
+
+            }
+
+            Random Hora_Aleatoria = new Random();
+
+            Random minuto_aleatorio = new Random();
+
+            int hora_cita1 = Hora_Aleatoria.Next(6, 21);
+            int minuto_cita1 = minuto_aleatorio.Next(0, 60);
+
+            int hora_cita2 = Hora_Aleatoria.Next(6, 21);
+            int minuto_cita2 = minuto_aleatorio.Next(0, 60);
+
+            int hora_cita3 = Hora_Aleatoria.Next(6, 21);
+            int minuto_cita3 = minuto_aleatorio.Next(0, 60);
+
+            if (hora_cita1 < 12)
+            {
+                meridiano1 = "AM";
+            }
+            else
+            {
+                meridiano1 = "PM";
+            }
+
+            if (hora_cita2 < 12)
+            {
+                meridiano2 = "AM";
+            }
+            else
+            {
+                meridiano2 = "PM";
+            }
+
+            if (hora_cita3 < 12)
+            {
+                meridiano3 = "AM";
+            }
+            else
+            {
+                meridiano3 = "PM";
+            }
+
+
+            string hora_cita1_string = hora_cita1.ToString();
+
+            string hora_cita2_string = hora_cita2.ToString();
+
+            string hora_cita3_string = hora_cita3.ToString();
+
+            Console.WriteLine("Por favor ingrese la hora en la que se desea atender: ");
+
+            Console.WriteLine($"Horas disponibles:  [ {hora_cita1}:{minuto_cita1} {meridiano1} ] | [ {hora_cita2}:{minuto_cita2} {meridiano2} ] | [ {hora_cita3}:{minuto_cita3} {meridiano3} ]");
+
+            Console.WriteLine("Por favor escriba la hora como se ve. (Ejemplo: Si dice 14:30 PM usted escribe 14:30 PM");
+
+            string hora_de_la_cita = Console.ReadLine();
+
+
+            if (hora_de_la_cita.Contains(meridiano1))
+            {
+                if (meridiano1 == "AM")
+                {
+                    turno = "Turno Mañana";
+                }
+                else
+                {
+                    turno = "Turno Tarde";
+                }
+            }
+
+
+            if (hora_de_la_cita.Contains(meridiano2))
+            {
+                if (meridiano2 == "AM")
+                {
+                    turno = "Turno Mañana";
+                }
+                else
+                {
+                    turno = "Turno Tarde";
+                }
+
+            }
+
+            if (hora_de_la_cita.Contains(meridiano3))
+            {
+                if (meridiano3 == "AM")
+                {
+                    turno = "Turno Mañana";
+                }
+                else
+                {
+                    turno = "Turno Tarde";
+                }
+
+            }
+
 
             Random Numero_Aleatorio_Para_Correo = new Random();
-            string apellido_correo = partes_nombre_paciente.Length > 1 ? partes_nombre_paciente[1].ToLower() : "paciente";
-            string correo_paciente = $"{partes_nombre_paciente[0].ToLower()}.{apellido_correo}{Numero_Aleatorio_Para_Correo.Next(100, 1000)}@gmail.com";
 
-            string fecha_y_hora_cita = $"El {doctor_elegido} lo vera el [ {dia_cita}/{mes_cita}/{año_cita} ] a las {hora_cita}:{minuto_cita} {meridiano}.";
 
-            
+
+            string correo_paciente = $"{partes_nombre_paciente[0].ToLower()}.{partes_nombre_paciente[1].ToLower()}{Numero_Aleatorio_Para_Correo.Next(100, 1000)}@gmail.com";
+
+            string fecha_y_hora_cita = ($"La cita se ha reservado para el dia: {dia_cita}/{mes_cita}/{año_cita} a las {hora_de_la_cita} en el {turno}.");
+
+
+
+
+
             arreglo_NOMBRES[Cantidad_Pacientes] = nombre_paciente_mayus;
             arreglo_PACIENTES[Cantidad_Pacientes] = nombre_paciente_mayus;
             arreglo_DNI[Cantidad_Pacientes] = dni_paciente_string;
@@ -205,22 +339,45 @@ namespace CDG_Mexico
             arreglo_GENERO[Cantidad_Pacientes] = genero_paciente;
             arreglo_EDAD[Cantidad_Pacientes] = edad_paciente;
             arreglo_DOCTOR[Cantidad_Pacientes] = doctor_elegido;
-            arreglo_ESPECIALIDADES[Cantidad_Pacientes] = nombre_especialidad;
             arreglo_FECHAHORA[Cantidad_Pacientes] = fecha_y_hora_cita;
             arreglo_CORREO_PACIENTES[Cantidad_Pacientes] = correo_paciente;
 
-            Console.WriteLine("\nSe ha registrado exitosamente en el sistema temporal.");
+
+
+
+
+            arreglo_CORREO_PACIENTES[Cantidad_Pacientes] = correo_paciente;
+
+            Console.WriteLine("Felicidades! Se ha registrado exitosamente.");
+
             Console.WriteLine(" * RESUMEN * ");
+
+
+
             Console.WriteLine("Nombre del paciente: " + nombre_paciente_mayus);
-            Console.WriteLine("Correo electronico asignado: " + correo_paciente);
+
+            Console.WriteLine("Para mantener al paciente en contacto se ha creado un correo electronico para el paciente: " + correo_paciente);
+
             Console.WriteLine(fecha_y_hora_cita);
+
+
             Console.WriteLine(" *********** ");
-            Console.WriteLine("NOTA: Recuerde usar la Opción 5 del menú para guardar los datos permanentemente.");
+
+
+            Console.WriteLine("Puede cambiar la direccion del correo electronico a la de su gusto volviendo al menu y eligiendo la opcion: " + " [ 4. Modificar historia clinca. ]");
+
+
+
+            Console.WriteLine("*****************************");
 
             Cantidad_Pacientes++;
 
-            Console.WriteLine("\nPresione cualquier tecla para continuar...");
+
+
             Console.ReadKey();
+
+            Console.Clear();
+
         }
 
         static public void Ordenar_Pacientes_Por_Orden_Alfabetico()
