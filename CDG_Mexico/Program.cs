@@ -483,6 +483,7 @@ namespace CDG_Mexico
                         if (eleccion != 1 && eleccion != 2 || eleccion < 1 || eleccion > 2)
                         {
                             Console.WriteLine("Opcion invalida, porfavor vuelva a intentar, Opciones validas: [ 1: Cambiar Correo, 2: Cambiar numero de telefono. ]");
+                            Console.ReadKey();
                             return;
                         }
 
@@ -501,6 +502,7 @@ namespace CDG_Mexico
 
                     Console.WriteLine("\n¡Datos actualizados en la memoria exitosamente!");
                     Console.WriteLine("NOTA: Recuerde usar la Opción 5 del menú para guardar los cambios permanentemente.");
+                    Console.ReadKey();
 
                     encontrado = true;
                     break;
