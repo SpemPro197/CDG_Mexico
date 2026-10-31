@@ -475,14 +475,33 @@ namespace CDG_Mexico
                 if (arreglo_DNI[i] == dni_buscar)
                 {
                     Console.WriteLine("\nPaciente encontrado: " + arreglo_PACIENTES[i]);
-                    Console.WriteLine("Ingrese el nuevo correo electrónico:");
-                    arreglo_CORREO_PACIENTES[i] = Console.ReadLine()?.Trim();
+                    Console.WriteLine("Por favor eliga el dato que quiere modificar: [ 1: Cambiar Correo, 2: Cambiar numero de telefono. ]");
 
-                    Console.WriteLine("Ingrese el nuevo número de teléfono:");
-                    arreglo_NUMTELF[i] = Console.ReadLine()?.Trim();
+                    int eleccion = int.Parse(Console.ReadLine());
+
+                    
+                        if (eleccion != 1 && eleccion != 2 || eleccion < 1 || eleccion > 2)
+                        {
+                            Console.WriteLine("Opcion invalida, porfavor vuelva a intentar, Opciones validas: [ 1: Cambiar Correo, 2: Cambiar numero de telefono. ]");
+                            return;
+                        }
+
+                        if (eleccion == 1)
+                        {
+                            Console.WriteLine("Ingrese el nuevo correo electrónico:");
+                            arreglo_CORREO_PACIENTES[i] = Console.ReadLine()?.Trim();
+                        }
+
+                        if (eleccion == 2)
+                        {
+                            Console.WriteLine("Ingrese el nuevo número de teléfono:");
+                            arreglo_NUMTELF[i] = Console.ReadLine()?.Trim();
+                        }
+                    
 
                     Console.WriteLine("\n¡Datos actualizados en la memoria exitosamente!");
                     Console.WriteLine("NOTA: Recuerde usar la Opción 5 del menú para guardar los cambios permanentemente.");
+
                     encontrado = true;
                     break;
                 }
